@@ -1,8 +1,7 @@
 <div>
-  <div>Hey, Pokemons</div><br><br>
-  <div *ngFor="let pokemon of (pokemons$ | async)">
-    <div>My Name</div>
-    <div>{{ pokemon.name }}</div>
-    <br>
-  </div>
+  <a routerLink="first-pokemon">First Pokemon</a>&nbsp;
+  <a routerLink="last-pokemon">Last Pokemon</a> &nbsp;
+  <a routerLink="list-pokemons">List Pokemons</a>&nbsp;
 </div>
+<br><br>
+<router-outlet></router-outlet>
