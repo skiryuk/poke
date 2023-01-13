@@ -1,7 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
-
-import { Pokemon } from '../../../core/models/home.models';
 import { PokemonService } from '../../../core/services/pokemon.service';
 
 @Component({
@@ -10,21 +7,18 @@ import { PokemonService } from '../../../core/services/pokemon.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  public pokemons$ = new BehaviorSubject<Array<Pokemon>>([]);
 
-  private _subs = new Subscription();
+  get pokemons$() {
+    return this._pokemonService.pokemons$;
+  }
 
   constructor(private  _pokemonService: PokemonService) {
   }
 
   ngOnInit(): void {
-    this._subs.add(
-      this._pokemonService.loadPokemons()
-        .subscribe(res => this.pokemons$.next(res))
-    );
+    this._pokemonService.loadPokemons();
   }
 
   ngOnDestroy(): void {
-    this._subs.unsubscribe();
   }
 }

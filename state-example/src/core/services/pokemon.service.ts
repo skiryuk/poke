@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Pokemon, PokemonResult } from '../models/home.models';
 import { HttpClient } from '@angular/common/http';
 
@@ -7,12 +7,14 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class PokemonService {
+  public pokemons$ = new BehaviorSubject<Array<Pokemon>>([]);
+
   constructor(
     private _http: HttpClient,
     ) { }
 
-  public loadPokemons(): Observable<Array<Pokemon>> {
-    return this._http.get<PokemonResult>(`https://pokeapi.co/api/v2/pokemon?offset=10&limit=10`)
-      .pipe(map((res) => res.results ?? []));
+  public loadPokemons(): void {
+    this._http.get<PokemonResult>(`https://pokeapi.co/api/v2/pokemon?offset=10&limit=10`)
+      .subscribe(res => this.pokemons$.next(res.results ?? []));
   }
 }
